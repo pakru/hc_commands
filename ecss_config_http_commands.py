@@ -193,7 +193,7 @@ class httpTerm:
 		self.makeHttpPOST(self.xmlRequest, self.commandURL)
 		return self.lastCode
 
-	def tcTemplateCreate(self, domainName, templateName, addressFirst, addressesCount):
+	def tcTemplateCreate(self, domainName, templateName, addressFirst, addressesCount, groupBy = 100):
 		self.commandURL = '/commands/tc_meeting'
 		self.addressesXML = ''
 		'''
@@ -202,18 +202,18 @@ class httpTerm:
 		'''
 
 		#self.grId = 1
-		self.grCount = (addressesCount // 100) + 1
+		self.grCount = (addressesCount // groupBy) + 1
 		print('grCount :' + str(self.grCount))
 		self.groupsXml = ''
 
 		for self.grId in range(1,self.grCount+1):
-			self.initAddr = int(addressFirst) + ((self.grId - 1) * 100)
+			self.initAddr = int(addressFirst) + ((self.grId - 1) * groupBy)
 			print('initAddr :'+ str(self.initAddr))
-			self.addrCnt = addressesCount - ( (self.grId - 1) * 100 )
-			if self.addrCnt > 100:
-				self.addrCnt = 100
+			self.addrCnt = addressesCount - ( (self.grId - 1) * groupBy )
+			if self.addrCnt > groupBy:
+				self.addrCnt = groupBy
 			print('addrCnt :'+ str(self.addrCnt))
-			self.finAddr = (int(addressFirst) + ((self.grId - 1) * 100)) + self.addrCnt
+			self.finAddr = (int(addressFirst) + ((self.grId - 1) * groupBy)) + self.addrCnt
 			print('finAddr :'+ str(self.finAddr))
 
 			for self.address in range(self.initAddr, self.finAddr):
